@@ -13,7 +13,15 @@ module.exports = function(passport){
                     return done(null ,false,{message:'That email is not registered'})
                 }
 
-                bcrypt.compare(password,user.password)
+                bcrypt.compare(password,user.password,(err,isMatch)=>{
+                    if(err) throw err
+
+                    if(isMatch){
+                        return done(null,user)
+                    }else {
+                        return done(null,false,{message:'password incorrect'})
+                    }
+                })
             }).catch(err => console.log(err))
         })
     )
